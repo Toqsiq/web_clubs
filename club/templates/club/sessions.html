@@ -1,0 +1,53 @@
+{% extends 'club/base.html' %}
+
+{% block title %}Сессии{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Сессии</h1>
+    <a href="{% url 'club:session_create' %}" class="btn btn-primary">+ Добавить сессию</a>
+</div>
+
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Клиент</th>
+                <th>ПК</th>
+                <th>Тариф</th>
+                <th>Начало</th>
+                <th>Окончание</th>
+                <th>Статус</th>
+                <th>Стоимость</th>
+                <th>Оплата</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in sessions %}
+            <tr>
+                <td>#{{ session.id }}</td>
+                <td>{{ session.client.full_name }}</td>
+                <td>ПК №{{ session.computer.computer_number }}</td>
+                <td>{{ session.tariff.name }}</td>
+                <td>{{ session.start_time|date:"d.m.Y H:i" }}</td>
+                <td>{{ session.end_time|date:"d.m.Y H:i" }}</td>
+                <td>{{ session.status.name }}</td>
+                <td><strong>{{ session.total_cost }} ₽</strong></td>
+                <td>{{ session.payment_status }}</td>
+                <td>
+                    <a href="{% url 'club:session_edit' session.id %}" class="btn btn-secondary" style="margin-left:0;padding:6px 12px;font-size:0.82rem;">Изменить</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="empty-state">
+                    Сессий пока нет. <a href="{% url 'club:session_create' %}">Добавить первую</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

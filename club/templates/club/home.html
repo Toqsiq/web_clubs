@@ -1,0 +1,46 @@
+{% extends 'club/base.html' %}
+{% load static %}
+
+{% block title %}Главная — Компьютерный клуб{% endblock %}
+
+{% block content %}
+<section class="hero-video">
+    <div class="hero-video-bg">
+        <video autoplay muted loop playsinline poster="">
+            <source src="{% static 'club/video/bg_loop.mp4' %}" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
+        <div class="hero-orbs" aria-hidden="true">
+            <span class="orb orb-1"></span>
+            <span class="orb orb-2"></span>
+            <span class="orb orb-3"></span>
+        </div>
+    </div>
+    <div class="hero-video-content">
+        <div class="hero-badge">Сеть компьютерных клубов</div>
+        <h1>Добро пожаловать<br>в компьютерный клуб</h1>
+        <p>Мощные ПК, удобные тарифы и дополнительные услуги — всё для комфортной игры и работы.</p>
+        {% if not employee %}
+        <a href="{% url 'club:login' %}" class="btn btn-primary hero-cta">Войти в систему</a>
+        {% endif %}
+    </div>
+</section>
+
+{% if clubs %}
+<section class="clubs-section">
+    <h2>Наши клубы</h2>
+    <div class="card-list">
+        {% for club in clubs %}
+        <div class="card">
+            <h3>{{ club.name }}</h3>
+            <p>{{ club.address }}</p>
+            <p>{{ club.phone }}</p>
+            <p class="status {% if club.is_active %}active{% else %}inactive{% endif %}">
+                {% if club.is_active %}Открыт{% else %}Закрыт{% endif %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}

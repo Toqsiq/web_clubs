@@ -1,0 +1,57 @@
+{% extends 'club/base.html' %}
+
+{% block title %}Компьютеры{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Компьютеры</h1>
+    <a href="{% url 'club:computer_create' %}" class="btn btn-primary">+ Добавить компьютер</a>
+</div>
+
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>№ ПК</th>
+                <th>Зона</th>
+                <th>Статус</th>
+                <th>Процессор</th>
+                <th>Видеокарта</th>
+                <th>ОЗУ</th>
+                <th>Диск</th>
+                <th>Монитор</th>
+                <th>Активен</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pc in computers %}
+            <tr>
+                <td><strong>№{{ pc.computer_number }}</strong></td>
+                <td>{{ pc.zone.name }}</td>
+                <td>{{ pc.status.name }}</td>
+                <td>{{ pc.cpu }}</td>
+                <td>{{ pc.gpu }}</td>
+                <td>{{ pc.ram_gb }} GB</td>
+                <td>{{ pc.storage_gb }} GB</td>
+                <td>{{ pc.monitor }}</td>
+                <td>
+                    <span class="status {% if pc.is_active %}active{% else %}inactive{% endif %}">
+                        {% if pc.is_active %}Да{% else %}Нет{% endif %}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'club:computer_edit' pc.id %}" class="btn btn-secondary" style="margin-left:0;padding:6px 12px;font-size:0.82rem;">Изменить</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="empty-state">
+                    Компьютеров пока нет. <a href="{% url 'club:computer_create' %}">Добавить первый</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

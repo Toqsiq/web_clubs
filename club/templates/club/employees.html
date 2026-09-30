@@ -1,0 +1,49 @@
+{% extends 'club/base.html' %}
+
+{% block title %}Менеджеры{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Менеджеры</h1>
+    <a href="{% url 'club:employee_create' %}" class="btn btn-primary">+ Добавить менеджера</a>
+</div>
+
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Логин</th>
+                <th>Телефон</th>
+                <th>Клуб</th>
+                <th>Статус</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in employees %}
+            <tr>
+                <td>{{ emp.full_name }}</td>
+                <td>{{ emp.login }}</td>
+                <td>{{ emp.phone }}</td>
+                <td>{% if emp.club %}{{ emp.club.name }}{% else %}—{% endif %}</td>
+                <td>
+                    <span class="status {% if emp.is_active %}active{% else %}inactive{% endif %}">
+                        {% if emp.is_active %}Активен{% else %}Неактивен{% endif %}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'club:employee_edit' emp.id %}" class="btn btn-secondary" style="margin-left:0;padding:6px 12px;font-size:0.82rem;">Изменить</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="empty-state">
+                    Менеджеров пока нет. <a href="{% url 'club:employee_create' %}">Добавить первого</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
